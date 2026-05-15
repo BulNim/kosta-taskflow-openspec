@@ -51,7 +51,41 @@
     "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", Roboto, sans-serif;
 }
 
-html, body { font-family: var(--font-system); color: var(--color-text); background: var(--color-bg); }
+/* 다크 모드: html[data-theme="dark"]일 때 변수 오버라이드.
+   브랜드 primary/accent/danger는 그대로 유지. */
+html[data-theme="dark"] {
+  --color-bg: #0F172A;
+  --color-surface: #1E293B;
+  --color-border: #334155;
+  --color-text: #E2E8F0;
+  --color-text-muted: #94A3B8;
+
+  --color-todo-bg: #3A2A0F;
+  --color-todo-fg: #FCD34D;
+  --color-doing-bg: #162447;
+  --color-doing-fg: #93C5FD;
+  --color-done-bg: #0F2E1C;
+  --color-done-fg: #86EFAC;
+
+  --color-info-bg: #0B4953;
+  --color-info-fg: #7DD3FC;
+  --color-info-border: #1B9BB0;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+html, body {
+  font-family: var(--font-system);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* 부드러운 테마 전환 */
+html, body, .card, .input-base, .btn-primary, .btn-accent,
+header, main, aside, section, article, button, input, select, textarea {
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
 
 /* 공용 컴포넌트 클래스 */
 .btn-primary {
@@ -102,10 +136,32 @@ html, body { font-family: var(--font-system); color: var(--color-text); backgrou
 }
 .card:hover { box-shadow: var(--shadow-sm); }
 
-/* 컬럼 헤더 */
-.col-todo  { background: var(--color-todo-bg);  color: var(--color-todo-fg);  border-color: #FED7AA; }
-.col-doing { background: var(--color-doing-bg); color: var(--color-doing-fg); border-color: #BFDBFE; }
-.col-done  { background: var(--color-done-bg);  color: var(--color-done-fg);  border-color: #BBF7D0; }
+/* 컬럼 헤더 + 본문 (다크 모드 대응을 위해 토큰만 사용) */
+.col-todo  { background: var(--color-todo-bg);  color: var(--color-todo-fg);  border-color: var(--color-todo-fg); }
+.col-doing { background: var(--color-doing-bg); color: var(--color-doing-fg); border-color: var(--color-doing-fg); }
+.col-done  { background: var(--color-done-bg);  color: var(--color-done-fg);  border-color: var(--color-done-fg); }
+
+/* 다크 모드에서 Tailwind 기본 색이 흰 배경/검은 텍스트가 되지 않도록 명시 */
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] [class*="bg-white"] { background: var(--color-surface) !important; }
+html[data-theme="dark"] .text-slate-500 { color: var(--color-text-muted) !important; }
+html[data-theme="dark"] .text-slate-700,
+html[data-theme="dark"] .text-slate-800,
+html[data-theme="dark"] .text-slate-900 { color: var(--color-text) !important; }
+html[data-theme="dark"] .border,
+html[data-theme="dark"] .border-b,
+html[data-theme="dark"] .border-t,
+html[data-theme="dark"] .border-x,
+html[data-theme="dark"] .border-slate-200,
+html[data-theme="dark"] .border-slate-300 { border-color: var(--color-border) !important; }
+html[data-theme="dark"] .hover\:bg-slate-100:hover,
+html[data-theme="dark"] .hover\:bg-slate-50:hover { background: rgba(255,255,255,0.05) !important; }
+html[data-theme="dark"] .bg-slate-900 { background: #0F172A !important; }
+html[data-theme="dark"] .bg-slate-50,
+html[data-theme="dark"] [class*="bg-slate-50"] { background: var(--color-bg) !important; }
+
+/* 칸반 카드 (다크에서 보더 + 호버) */
+html[data-theme="dark"] .card { border-color: var(--color-border); }
 
 /* 토스트 */
 .toast {

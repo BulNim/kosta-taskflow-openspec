@@ -3,6 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <title>TaskFlow</title>
+  <script>
+    (function(){
+      try {
+        var v = localStorage.getItem("taskflow_theme");
+        if (v !== "light" && v !== "dark") {
+          v = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = v;
+      } catch(_) {}
+    })();
+  </script>
   <script type="module">
     import { getToken, clearToken } from "/js/auth.js";
 

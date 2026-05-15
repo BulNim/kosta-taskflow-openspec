@@ -4,14 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TaskFlow · 멤버</title>
+  <script>
+    (function(){
+      try {
+        var v = localStorage.getItem("taskflow_theme");
+        if (v !== "light" && v !== "dark") {
+          v = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = v;
+      } catch(_) {}
+    })();
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/tokens.css" />
 </head>
-<body class="min-h-screen" style="background:var(--color-bg)">
+<body class="min-h-screen" style="background:var(--color-bg);color:var(--color-text)">
   <div id="appHeader"></div>
 
   <main class="max-w-3xl mx-auto px-4 md:px-6 py-4 md:py-6">
-    <div class="bg-white rounded-2xl shadow-sm border p-4">
+    <div class="rounded-2xl shadow-sm border p-4" style="background:var(--color-surface);border-color:var(--color-border)">
       <h2 class="font-semibold mb-3">팀 멤버</h2>
       <ul id="memberList" class="divide-y">
         <li class="py-3 text-sm text-slate-500">로딩...</li>

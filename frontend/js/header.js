@@ -6,6 +6,7 @@
  */
 import { api } from "/js/api.js";
 import { clearToken } from "/js/auth.js";
+import { renderThemeToggle } from "/js/theme.js";
 
 export async function renderHeader({ teamId, active = "kanban" }) {
   const container = document.getElementById("appHeader");
@@ -40,10 +41,13 @@ export async function renderHeader({ teamId, active = "kanban" }) {
       </nav>
       <div class="flex items-center gap-3 text-sm">
         <span class="text-slate-500 hidden sm:inline">${escapeHtml(userEmail)}</span>
+        <span id="themeToggleSlot"></span>
         <button id="globalLogoutBtn" class="text-slate-500 hover:text-slate-900">로그아웃</button>
       </div>
     </div>
   `;
+
+  renderThemeToggle(document.getElementById("themeToggleSlot"));
 
   document.getElementById("globalLogoutBtn").addEventListener("click", async () => {
     try { await api("/auth/logout", { method: "POST" }); } catch {}

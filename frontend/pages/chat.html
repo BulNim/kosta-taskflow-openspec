@@ -4,10 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TaskFlow · 채팅</title>
+  <script>
+    (function(){
+      try {
+        var v = localStorage.getItem("taskflow_theme");
+        if (v !== "light" && v !== "dark") {
+          v = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = v;
+      } catch(_) {}
+    })();
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/tokens.css" />
 </head>
-<body class="min-h-screen flex flex-col" style="background:var(--color-bg)">
+<body class="min-h-screen flex flex-col" style="background:var(--color-bg);color:var(--color-text)">
   <div id="appHeader"></div>
 
   <main class="flex-1 max-w-3xl w-full mx-auto px-4 md:px-6 py-4 md:py-6 flex flex-col">
