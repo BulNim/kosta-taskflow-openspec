@@ -95,10 +95,10 @@
 ## 12. 배포 (Vercel + Neon)
 
 - [x] 12.1 `vercel.json` (또는 `vercel.ts`) 작성 — FastAPI 함수 라우팅 + 정적 자산 경로
-- [ ] 12.2 Vercel 프로젝트 생성, GitHub 저장소 연결
-- [ ] 12.3 Vercel Storage > Neon Postgres 프로비저닝, Pooled `DATABASE_URL` 자동 주입 확인
-- [ ] 12.4 환경변수 추가: `JWT_SECRET`(랜덤 생성), `CORS_ORIGINS`(배포 도메인)
-- [ ] 12.5 첫 배포 → 자동 URL 확인
+- [x] 12.2 Vercel 프로젝트 생성, GitHub 저장소 연결 (기존 `v0-taskflow` 프로젝트와 `.vercel/project.json`으로 링크)
+- [x] 12.3 Vercel Storage > Neon Postgres 프로비저닝, Pooled `DATABASE_URL` 자동 주입 확인 (signup 201로 검증됨)
+- [x] 12.4 환경변수 추가: `JWT_SECRET`(랜덤 생성), `CORS_ORIGINS`(배포 도메인) — JWT_SECRET production 등록 완료. CORS는 동일 origin이라 기본값 유지
+- [x] 12.5 첫 배포 → 자동 URL 확인 (https://v0-taskflow-ruby.vercel.app)
 - [ ] 12.6 배포 후 `POST /auth/signup` → 팀 생성 → 칸반/채팅 전체 흐름 수동 확인
 
 ## 13. 수동 동작 확인 (자동 테스트 대체)
