@@ -85,6 +85,16 @@
 
 **선택 이유:** 사용자가 칸반/채팅/멤버 간 빠르게 전환. 멤버 탭은 신규 페이지 추가 없이 동일 레이아웃, 본문만 멤버 그리드로 교체.
 
+### 11. assignee 변경 권한: 팀 멤버 누구나
+
+**대안:** 작성자(creator_id)만, admin 추가, 본인이 assignee일 때만.
+**선택 이유:** 칸반은 공유 보드 성격. 기존 태스크 삭제·상태 이동 권한도 "팀 멤버 누구나" 패턴이므로 일관성 유지. assignee로 지정될 사람이 해당 팀 멤버여야 한다는 invariant는 별도 검증(ASSIGNEE_NOT_TEAM_MEMBER 400).
+
+### 12. 모바일 상태 변경 UX: 카드 탭 → bottom-sheet modal에서 status 선택
+
+**대안:** 길게 누르기(long-press) 컨텍스트 메뉴, 모바일에서도 드래그 시도.
+**선택 이유:** 길게 누르기 제스처는 OS·브라우저별 동작 차이가 큼(텍스트 선택과 충돌). 단순 탭이 가장 일관적이고 접근성 친화. bottom-sheet는 TODO/DOING/DONE 세 옵션 + 취소만 노출. 길게 누르기 메뉴는 별도 propose 안건.
+
 ## Risks / Trade-offs
 
 - **[BREAKING DB 변경]** → `users.current_team_id`, `tasks.assignee_id` 컬럼 추가. SQLite는 `ALTER TABLE ADD COLUMN`으로 충분. 기존 데이터는 NULL 기본값 → 무손실 마이그레이션.
@@ -103,7 +113,11 @@
 
 ## Open Questions
 
-- **마이그레이션 도구 도입 여부**: Alembic 도입 vs 임시 raw SQL 실행 스크립트 vs `create_all` 재구성. 권장: 이번에 도입하지 않고 raw SQL 1회 실행 (Neon 콘솔). MVP 다음 변경에서 Alembic 도입을 별도 propose로.
-- **assignee 변경 권한**: 본인 카드만 vs 팀 멤버 누구나 vs admin만. 현재 가정: 팀 멤버 누구나 (기존 태스크 삭제 권한과 동일).
-- **모바일 카드 길게 누르기 메뉴**: 이번 propose 범위에 포함할지 별도로 미룰지. 권장: 별도 propose. 이번엔 데스크탑 드래그만 동작, 모바일은 카드 클릭 → 상세 modal에서 상태 변경 (또는 일단 데스크탑만).
-- **에러 포맷 변경**: 스토리보드 `{error:{code,message}}` vs 현재 `{code,msg}`. 권장: 이번 변경에서는 보류, 별도 propose `align-error-format-with-storyboard`로.
+이전 미결 4건은 모두 결정됐다 (Decisions #11, #12에 반영). 향후 별도 propose로 이월된 항목은 아래 "Deferred to Future Proposes" 참조.
+
+## Deferred to Future Proposes
+
+- `introduce-alembic-migrations` — 이번에는 Neon 콘솔에서 `ALTER TABLE` 2건 직접 실행, 후속 변경부터는 Alembic으로 마이그레이션 이력 관리
+- `align-error-format-with-storyboard` — 스토리보드의 `{error:{code,message}}` 중첩 포맷으로 통일 (현재 `{code,msg}` 평면 → BREAKING 변경이므로 단독 propose)
+- `mobile-long-press-status-menu` — 모바일에서 길게 누르기 제스처로 상태 메뉴 표시 (이번 변경은 카드 탭 → bottom-sheet modal로 처리)
+- `multi-team-context-switching` — 명시적 `current_team_id` 전환 API와 멀티 팀 전환 UX

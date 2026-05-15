@@ -56,7 +56,7 @@
 - WebSocket/SSE 전환 (여전히 5초 폴링 유지)
 - 다국어, 알림, 파일 첨부 등 MVP 외 기능
 - 에러 응답 포맷 변경 (별도 propose에서 다룸)
-- 카드 길게 누르기 메뉴 (모바일 한정, 다음 이터레이션)
+- 모바일 카드 길게 누르기(long-press) 컨텍스트 메뉴 — 이번엔 카드 탭 → bottom-sheet modal에서 status 선택으로 처리. 길게 누르기 제스처는 별도 propose
 - 자동 테스트, 시각 회귀 테스트
 
 ## Capabilities
