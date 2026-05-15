@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>WF: 채팅 정상 — 말풍선 + 폴링</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <header class="px-6 py-4 border-b bg-white">
+    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">← 인덱스</a>
+    <h1 class="text-xl font-bold text-slate-900 mt-1">E · 채팅 정상 — 말풍선 + 폴링</h1>
+    <p class="text-sm text-slate-500">팀 단위 채팅. 5초 폴링으로 since= 파라미터 사용 → 새 메시지만 가져옴</p>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 grid md:grid-cols-[1.4fr_1fr] gap-6">
+    <section class="bg-white rounded-2xl shadow border overflow-hidden">
+      <div class="px-3 py-2 bg-slate-100 border-b flex items-center gap-1.5">
+        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+        <span class="ml-3 text-xs text-slate-500 bg-white border rounded px-2 py-0.5">taskflow.vercel.app</span>
+      </div>
+
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h2 class="font-semibold text-slate-800">Frontiers 팀 · 채팅</h2>
+        <span class="flex items-center gap-1.5 text-xs text-teal-700"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> 5초마다 새로고침</span>
+      </div>
+
+      <div class="p-6 space-y-4 min-h-[420px]">
+        <!-- 타인 메시지 -->
+        <div>
+          <div class="text-xs text-slate-500">리더 · 14:25</div>
+          <div class="mt-1 inline-block max-w-[80%] px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-900 shadow-sm">
+            오늘 DOING 컬럼 비워둘 수 있을까요?
+          </div>
+        </div>
+
+        <!-- 자기 메시지 -->
+        <div class="text-right">
+          <div class="text-xs text-slate-500">나 · 14:27</div>
+          <div class="mt-1 inline-block max-w-[80%] px-3 py-2 rounded-lg bg-[#14808F] text-white shadow-sm">
+            JWT 미들웨어만 끝내고 옮길게요
+          </div>
+        </div>
+
+        <!-- 타인 메시지 -->
+        <div>
+          <div class="text-xs text-slate-500">신규 · 14:30</div>
+          <div class="mt-1 inline-block max-w-[80%] px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-900 shadow-sm">
+            초대코드는 어디 입력하나요?
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 py-4 border-t flex gap-2">
+        <input placeholder="메시지 입력 (1000자 이내)..." class="flex-1 px-3 py-2.5 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        <button class="px-6 py-2.5 rounded-md bg-[#14808F] hover:bg-[#0F6975] text-white font-semibold">전송</button>
+      </div>
+    </section>
+
+    <aside class="bg-white rounded-2xl shadow border p-6">
+      <h2 class="font-semibold text-slate-900">폴링 로직</h2>
+      <ol class="mt-4 space-y-3 text-sm text-slate-700">
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">1</span><div>처음 진입: <code class="text-xs">GET .../messages</code> (since 없음 → 최근 50개)</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">2</span><div>5초 후: <code class="text-xs">GET .../messages?since=14:30:00</code> (마지막 메시지 시각)</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">3</span><div>응답이 빈 배열이면 화면 변화 없음</div></li>
+      </ol>
+
+      <h3 class="font-semibold text-slate-900 mt-6 text-sm">응답 JSON</h3>
+      <pre class="mt-2 p-3 bg-slate-900 text-slate-100 rounded-lg text-xs leading-relaxed overflow-x-auto"><code>HTTP 200 OK
+[
+  {
+    "id": 23,
+    "user_id": 42,
+    "user_email": "user@ex.com",
+    "content": "JWT 미들...",
+    "created_at": "2026-05-13T14:27:00Z"
+  }
+]</code></pre>
+    </aside>
+  </main>
+</body>
+</html>

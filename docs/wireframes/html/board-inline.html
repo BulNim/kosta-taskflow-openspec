@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>WF: 태스크 인라인 추가</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <header class="px-6 py-4 border-b bg-white">
+    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">← 인덱스</a>
+    <h1 class="text-xl font-bold text-slate-900 mt-1">D · 태스크 생성 — 인라인 입력</h1>
+    <p class="text-sm text-slate-500">TODO 컬럼 헤더 '+' 클릭 → 인라인 입력란 등장 → Enter로 저장</p>
+  </header>
+
+  <main class="max-w-[1300px] mx-auto px-6 py-6">
+    <div class="bg-white rounded-2xl shadow border overflow-hidden">
+      <div class="px-3 py-2 bg-slate-100 border-b flex items-center gap-1.5">
+        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+        <span class="ml-3 text-xs text-slate-500 bg-white border rounded px-2 py-0.5">taskflow.vercel.app</span>
+      </div>
+
+      <div class="flex items-center justify-between px-6 py-4 border-b">
+        <div class="flex items-center gap-4">
+          <span class="font-bold text-[#14808F]">TaskFlow</span>
+          <span class="text-slate-700">Frontiers 팀</span>
+        </div>
+        <nav class="flex items-center gap-2">
+          <button class="px-4 py-1.5 rounded-md bg-[#14808F] text-white text-sm font-semibold">칸반</button>
+          <button class="px-4 py-1.5 rounded-md text-slate-700 hover:bg-slate-100 text-sm">채팅</button>
+          <button class="px-4 py-1.5 rounded-md text-slate-700 hover:bg-slate-100 text-sm">멤버</button>
+        </nav>
+        <div class="text-sm text-slate-500">user@ex.com</div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 p-6 bg-slate-50/50">
+        <!-- TODO with inline create -->
+        <section>
+          <header class="rounded-t-lg px-4 py-3 flex items-center justify-between bg-[#FFE9C4] border-t border-x border-amber-200">
+            <span class="font-semibold text-[#B45309]">TODO · 3 → 4</span>
+            <button class="text-[#B45309] hover:bg-amber-200/60 rounded w-7 h-7 grid place-items-center">×</button>
+          </header>
+          <div class="bg-white border border-amber-200 rounded-b-lg p-2 space-y-2 min-h-[300px]">
+            <!-- Inline create card (active) -->
+            <article class="border-2 border-teal-500 rounded-md p-3 space-y-2">
+              <input value="팀 멤버 페이지 페이지네이션" autofocus class="w-full px-0 py-0 font-semibold text-slate-900 focus:outline-none" />
+              <div class="flex items-center gap-2 text-sm">
+                <label class="text-slate-500">담당자:</label>
+                <select class="px-2 py-1 border border-slate-300 rounded text-sm bg-white">
+                  <option>@me ▼</option>
+                  <option>@leader</option>
+                  <option>(미할당)</option>
+                </select>
+              </div>
+              <p class="text-xs text-slate-500 italic">Enter: 저장 · Esc: 취소</p>
+            </article>
+
+            <article class="border border-slate-200 rounded-md px-3 py-2.5">
+              <div class="font-medium text-slate-900">DB 마이그레이션 작성</div>
+              <div class="text-xs text-slate-500 mt-1">#100 · <span class="text-teal-700">@me</span></div>
+            </article>
+            <article class="border border-slate-200 rounded-md px-3 py-2.5">
+              <div class="font-medium text-slate-900">초대코드 만료 정책</div>
+              <div class="text-xs text-slate-500 mt-1">#101 · <span class="text-teal-700">@leader</span></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- DOING (collapsed) -->
+        <section>
+          <header class="rounded-t-lg px-4 py-3 flex items-center justify-between bg-[#DEEBFF] border-t border-x border-blue-200">
+            <span class="font-semibold text-[#1E40AF]">DOING · 2</span>
+          </header>
+          <div class="bg-white border border-blue-200 rounded-b-lg p-6 min-h-[300px] grid place-items-center text-slate-400 text-sm italic">
+            (생략 — 다른 슬라이드 참조)
+          </div>
+        </section>
+
+        <!-- DONE (collapsed) -->
+        <section>
+          <header class="rounded-t-lg px-4 py-3 flex items-center justify-between bg-[#D5EBD5] border-t border-x border-green-200">
+            <span class="font-semibold text-[#166534]">DONE · 2</span>
+          </header>
+          <div class="bg-white border border-green-200 rounded-b-lg p-6 min-h-[300px] grid place-items-center text-slate-400 text-sm italic">
+            (생략 — 다른 슬라이드 참조)
+          </div>
+        </section>
+      </div>
+
+      <footer class="px-6 py-3 border-t bg-slate-50 text-xs text-slate-500">
+        시퀀스: [+ 클릭] → [인라인 입력 등장] → [제목 + assignee 입력] → [Enter] → POST /teams/{id}/tasks → 201 Created → 카드로 변환
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

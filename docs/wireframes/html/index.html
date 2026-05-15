@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>TaskFlow 와이어프레임 인덱스</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <header class="mb-10">
+      <p class="text-xs tracking-widest text-teal-700 font-semibold">STORYBOARD · v2</p>
+      <h1 class="text-3xl font-bold text-slate-900 mt-1">TaskFlow MVP — 와이어프레임 HTML</h1>
+      <p class="text-slate-500 mt-2">스토리보드 PDF 42장을 화면 단위 HTML 목업으로 퍼블리싱</p>
+    </header>
+
+    <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <a href="signup.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">B · 회원가입</div>
+        <div class="mt-2 font-semibold text-slate-900">회원가입 (3상태)</div>
+        <div class="mt-1 text-xs text-slate-500">초기 / 입력중 / 처리중</div>
+      </a>
+      <a href="login.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">B · 로그인</div>
+        <div class="mt-2 font-semibold text-slate-900">로그인 정상 흐름</div>
+        <div class="mt-1 text-xs text-slate-500">성공 → 이동중 상태</div>
+      </a>
+      <a href="teams-empty.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">C · 팀 선택</div>
+        <div class="mt-2 font-semibold text-slate-900">팀 미가입 진입</div>
+        <div class="mt-1 text-xs text-slate-500">team_id = NULL 분기</div>
+      </a>
+      <a href="board.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">D · 칸반</div>
+        <div class="mt-2 font-semibold text-slate-900">칸반 정상 상태</div>
+        <div class="mt-1 text-xs text-slate-500">3컬럼 + 필터 + 정렬</div>
+      </a>
+      <a href="board-inline.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">D · 칸반</div>
+        <div class="mt-2 font-semibold text-slate-900">태스크 인라인 추가</div>
+        <div class="mt-1 text-xs text-slate-500">+ 클릭 → 인라인 폼</div>
+      </a>
+      <a href="chat.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">E · 채팅</div>
+        <div class="mt-2 font-semibold text-slate-900">채팅 정상 — 말풍선 + 폴링</div>
+        <div class="mt-1 text-xs text-slate-500">5초 새로고침, 자기/타인 버블</div>
+      </a>
+      <a href="mobile-board.html" class="block bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="text-xs text-teal-700 font-mono">F · 모바일</div>
+        <div class="mt-2 font-semibold text-slate-900">모바일 칸반 — 스와이프</div>
+        <div class="mt-1 text-xs text-slate-500">3컬럼 → 1컬럼 + 인디케이터</div>
+      </a>
+    </section>
+
+    <section class="mt-10 bg-white border rounded-2xl p-6 text-sm text-slate-700">
+      <h2 class="font-semibold text-slate-900 mb-3">디자인 토큰 요약</h2>
+      <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+        <dt class="font-mono text-xs text-slate-500">primary (teal)</dt>
+        <dd><span class="inline-block w-4 h-4 align-middle rounded mr-1" style="background:#14808F"></span>#14808F (브랜드, CTA)</dd>
+        <dt class="font-mono text-xs text-slate-500">accent (green)</dt>
+        <dd><span class="inline-block w-4 h-4 align-middle rounded mr-1" style="background:#15D9B0"></span>#15D9B0 (합류 등 보조 CTA)</dd>
+        <dt class="font-mono text-xs text-slate-500">column-todo</dt>
+        <dd><span class="inline-block w-4 h-4 align-middle rounded mr-1" style="background:#FFE9C4"></span>#FFE9C4 + 텍스트 #B45309</dd>
+        <dt class="font-mono text-xs text-slate-500">column-doing</dt>
+        <dd><span class="inline-block w-4 h-4 align-middle rounded mr-1" style="background:#DEEBFF"></span>#DEEBFF + 텍스트 #1E40AF</dd>
+        <dt class="font-mono text-xs text-slate-500">column-done</dt>
+        <dd><span class="inline-block w-4 h-4 align-middle rounded mr-1" style="background:#D5EBD5"></span>#D5EBD5 + 텍스트 #166534</dd>
+        <dt class="font-mono text-xs text-slate-500">page bg</dt>
+        <dd><span class="inline-block w-4 h-4 align-middle rounded mr-1 border" style="background:#F8FAFC"></span>#F8FAFC</dd>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>

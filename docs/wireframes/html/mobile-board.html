@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>WF: 모바일 칸반 — 컬럼 스와이프</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <header class="px-6 py-4 border-b bg-white">
+    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">← 인덱스</a>
+    <h1 class="text-xl font-bold text-slate-900 mt-1">F · 모바일 칸반 — 컬럼 스와이프</h1>
+    <p class="text-sm text-slate-500">데스크탑 3컬럼 → 모바일 1컬럼씩 가로 스와이프. 헤더에 컬럼 인디케이터</p>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 grid md:grid-cols-[1.5fr_1fr] gap-8">
+    <section class="grid grid-cols-3 gap-4 items-start">
+      <!-- 모바일 1: TODO -->
+      <div class="bg-white border border-slate-300 rounded-[2rem] overflow-hidden shadow-md">
+        <div class="px-3 py-1.5 flex items-center justify-between text-xs bg-slate-50 border-b">
+          <span>9:41</span><span>•••• | 100%</span>
+        </div>
+        <div class="px-4 py-3 flex items-center justify-between border-b">
+          <span class="font-bold text-[#14808F]">Frontiers</span>
+          <span>☰</span>
+        </div>
+        <div class="px-4 pt-3 flex justify-around text-sm">
+          <span class="pb-1 border-b-2 border-teal-600 text-teal-600 font-semibold">TODO</span>
+          <span class="pb-1 text-slate-500">DOING</span>
+          <span class="pb-1 text-slate-500">DONE</span>
+        </div>
+        <div class="px-3 mt-2 py-2 rounded-md bg-[#FFE9C4] text-[#B45309] text-sm font-semibold">TODO · 3</div>
+        <div class="px-3 pb-4 space-y-2 mt-2">
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">DB 마이그레이션</div>
+            <div class="text-slate-500 mt-0.5">#100 <span class="text-teal-700">@me</span></div>
+          </article>
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">초대코드 정책</div>
+            <div class="text-slate-500 mt-0.5">#101 <span class="text-teal-700">@leader</span></div>
+          </article>
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">에러 표준화</div>
+            <div class="text-slate-500 mt-0.5">#102 <span class="text-teal-700">@me</span></div>
+          </article>
+        </div>
+      </div>
+
+      <!-- 모바일 2: DOING -->
+      <div class="bg-white border border-slate-300 rounded-[2rem] overflow-hidden shadow-md">
+        <div class="px-3 py-1.5 flex items-center justify-between text-xs bg-slate-50 border-b">
+          <span>9:41</span><span>•••• | 100%</span>
+        </div>
+        <div class="px-4 py-3 flex items-center justify-between border-b">
+          <span class="font-bold text-[#14808F]">Frontiers</span>
+          <span>☰</span>
+        </div>
+        <div class="px-4 pt-3 flex justify-around text-sm">
+          <span class="pb-1 text-slate-500">TODO</span>
+          <span class="pb-1 border-b-2 border-teal-600 text-teal-600 font-semibold">DOING</span>
+          <span class="pb-1 text-slate-500">DONE</span>
+        </div>
+        <div class="px-3 mt-2 py-2 rounded-md bg-[#DEEBFF] text-[#1E40AF] text-sm font-semibold">DOING · 2</div>
+        <div class="px-3 pb-4 space-y-2 mt-2">
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">JWT 미들웨어</div>
+            <div class="text-slate-500 mt-0.5">#110 <span class="text-teal-700">@me</span></div>
+          </article>
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">드래그 핸들러</div>
+            <div class="text-slate-500 mt-0.5">#111 <span class="text-teal-700">@me</span></div>
+          </article>
+        </div>
+      </div>
+
+      <!-- 모바일 3: DONE -->
+      <div class="bg-white border border-slate-300 rounded-[2rem] overflow-hidden shadow-md">
+        <div class="px-3 py-1.5 flex items-center justify-between text-xs bg-slate-50 border-b">
+          <span>9:41</span><span>•••• | 100%</span>
+        </div>
+        <div class="px-4 py-3 flex items-center justify-between border-b">
+          <span class="font-bold text-[#14808F]">Frontiers</span>
+          <span>☰</span>
+        </div>
+        <div class="px-4 pt-3 flex justify-around text-sm">
+          <span class="pb-1 text-slate-500">TODO</span>
+          <span class="pb-1 text-slate-500">DOING</span>
+          <span class="pb-1 border-b-2 border-teal-600 text-teal-600 font-semibold">DONE</span>
+        </div>
+        <div class="px-3 mt-2 py-2 rounded-md bg-[#D5EBD5] text-[#166534] text-sm font-semibold">DONE · 2</div>
+        <div class="px-3 pb-4 space-y-2 mt-2">
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">signup API</div>
+            <div class="text-slate-500 mt-0.5">#120 <span class="text-teal-700">@me</span></div>
+          </article>
+          <article class="border border-slate-200 rounded-md px-2 py-2 text-xs">
+            <div class="font-medium text-slate-900">팀 생성</div>
+            <div class="text-slate-500 mt-0.5">#121 <span class="text-teal-700">@leader</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <aside class="bg-white rounded-2xl shadow border p-6">
+      <h2 class="font-semibold text-slate-900">모바일 대응</h2>
+      <ol class="mt-4 space-y-3 text-sm text-slate-700">
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">1</span><div>Breakpoint &lt; 768px → 1컬럼 모드</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">2</span><div>좌우 스와이프로 TODO ↔ DOING ↔ DONE</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">3</span><div>상단 인디케이터로 현재 컬럼 표시</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">4</span><div>카드 길게 누르기 → 상태 변경 메뉴 (드래그 대신 메뉴 선택)</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">5</span><div>동일 API 사용 (반응형 UI만)</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">6</span><div>FAB 버튼 (+) 우하단 — 카드 추가</div></li>
+      </ol>
+    </aside>
+  </main>
+</body>
+</html>

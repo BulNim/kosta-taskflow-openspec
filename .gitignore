@@ -31,3 +31,6 @@ build/
 
 # Vercel
 .vercel/
+
+# 스토리보드 PDF에서 추출한 페이지 PNG (재생성 가능)
+docs/wireframes/page-*.png

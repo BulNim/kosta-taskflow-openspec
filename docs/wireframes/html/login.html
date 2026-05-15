@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>WF: 로그인 정상 흐름</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <header class="px-6 py-4 border-b bg-white">
+    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">← 인덱스</a>
+    <h1 class="text-xl font-bold text-slate-900 mt-1">B · 로그인 — 정상 흐름</h1>
+    <p class="text-sm text-slate-500">이메일 + 비밀번호 → 200 + JWT (24h 유효) → localStorage 저장 → 분기</p>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 grid md:grid-cols-[1.4fr_1fr] gap-6">
+    <section class="bg-white rounded-2xl shadow border overflow-hidden">
+      <div class="px-3 py-2 bg-slate-100 border-b flex items-center gap-1.5">
+        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+        <span class="ml-3 text-xs text-slate-500 bg-white border rounded px-2 py-0.5">taskflow.vercel.app</span>
+      </div>
+      <div class="p-10">
+        <div class="flex justify-center"><span class="inline-block px-4 py-1.5 rounded-md bg-[#14808F] text-white font-semibold">TaskFlow</span></div>
+        <h3 class="text-2xl font-bold text-center text-slate-900 mt-6">로그인</h3>
+        <div class="space-y-3 mt-6">
+          <input value="user@example.com" class="w-full px-3 py-2.5 border border-slate-300 rounded-md" />
+          <input type="password" value="••••••••" class="w-full px-3 py-2.5 border border-slate-300 rounded-md" />
+          <button class="w-full py-2.5 rounded-md bg-[#14808F] text-white font-semibold">✓ 성공! 이동 중…</button>
+        </div>
+        <p class="text-center text-sm text-blue-600 mt-6">계정이 없으신가요? <a href="#" class="underline">회원가입</a></p>
+      </div>
+    </section>
+
+    <aside class="bg-white rounded-2xl shadow border p-6">
+      <h2 class="font-semibold text-slate-900">응답 흐름</h2>
+      <ol class="mt-4 space-y-3 text-sm">
+        <li class="flex gap-3">
+          <span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">1</span>
+          <div><code class="text-xs">POST /auth/login</code><br /><span class="text-slate-500 text-xs">{ email, password }</span></div>
+        </li>
+        <li class="flex gap-3">
+          <span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">2</span>
+          <div>200 OK + JWT (exp 24h)<br /><code class="text-xs">localStorage.setItem('token', jwt)</code></div>
+        </li>
+        <li class="flex gap-3">
+          <span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">3</span>
+          <div><code class="text-xs">users.team_id</code> 검사:<br /><span class="text-slate-600 text-xs">NULL → 팀 선택, ELSE → 칸반</span></div>
+        </li>
+      </ol>
+
+      <h3 class="font-semibold text-slate-900 mt-6 text-sm">응답 JSON 예시</h3>
+      <pre class="mt-2 p-3 bg-slate-900 text-slate-100 rounded-lg text-xs leading-relaxed overflow-x-auto"><code>{
+  "token": "eyJhbGc...",
+  "user": {
+    "id": 42,
+    "email": "user@example.com",
+    "team_id": null
+  }
+}</code></pre>
+    </aside>
+  </main>
+</body>
+</html>

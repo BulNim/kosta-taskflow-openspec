@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>WF: 팀 미가입 진입</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <header class="px-6 py-4 border-b bg-white">
+    <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">← 인덱스</a>
+    <h1 class="text-xl font-bold text-slate-900 mt-1">C · 팀 미가입 진입 — team_id = NULL</h1>
+    <p class="text-sm text-slate-500">로그인 직후 분기점. team_id가 NULL인 사용자는 이 화면을 통과해야만 칸반 가능</p>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 grid md:grid-cols-[1.4fr_1fr] gap-6">
+    <section class="bg-white rounded-2xl shadow border overflow-hidden">
+      <div class="px-3 py-2 bg-slate-100 border-b flex items-center gap-1.5">
+        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+        <span class="ml-3 text-xs text-slate-500 bg-white border rounded px-2 py-0.5">taskflow.vercel.app</span>
+      </div>
+      <div class="px-8 py-6">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-[#14808F]">TaskFlow</span>
+          <div class="text-sm text-slate-600">user@example.com <span class="mx-2 text-slate-300">|</span> <button class="hover:underline">로그아웃</button></div>
+        </div>
+        <div class="mt-5 px-4 py-3 border border-[#1B9BB0] bg-[#E0F4F7] rounded-md text-[#0E6A78] flex items-center gap-2 text-sm">
+          <span>ℹ</span> 아직 팀에 소속되지 않았습니다. 팀을 만들거나 초대코드로 합류하세요.
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5 mt-6">
+          <div class="border-2 border-dashed border-slate-300 rounded-xl p-6">
+            <h3 class="text-center font-semibold text-slate-800">+ 새 팀 만들기</h3>
+            <input placeholder="팀 이름 (1–30자)" maxlength="30" class="mt-4 w-full px-3 py-2.5 border border-slate-300 rounded-md placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button class="mt-3 w-full py-2.5 rounded-md bg-[#14808F] hover:bg-[#0F6975] text-white font-semibold">만들기</button>
+          </div>
+          <div class="border-2 border-dashed border-slate-300 rounded-xl p-6">
+            <h3 class="text-center font-semibold text-slate-800">초대코드로 합류</h3>
+            <input value="ABCD-1234" class="mt-4 w-full px-3 py-2.5 border border-slate-300 rounded-md text-center tracking-widest font-mono focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <p class="mt-1 text-xs text-slate-500 text-center">형식: 대문자 4 + 숫자 4 (하이픈 포함)</p>
+            <button class="mt-3 w-full py-2.5 rounded-md bg-[#15D9B0] hover:bg-[#0BB495] text-white font-semibold">합류</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="bg-white rounded-2xl shadow border p-6">
+      <h2 class="font-semibold text-slate-900">분기 로직</h2>
+      <ol class="mt-4 space-y-3 text-sm text-slate-700">
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">1</span><div><strong>조건부 표시</strong> — users.team_id가 NULL인 사용자에게만 이 화면 노출</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">2</span><div><strong>이미 팀 보유 시</strong> — 자동 redirect <code class="text-xs">→ /teams/{my_team_id}</code> (칸반)</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">3</span><div><strong>URL 직접 입력 차단</strong> — <code class="text-xs">/teams/*</code> 접근 시 team_id 검증 → NULL이면 여기로 redirect</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">4</span><div><strong>ESC/뒤로가기 시</strong> — 로그인 화면 X, 여기 머무름 (탈출 경로: 팀 가입만)</div></li>
+        <li class="flex gap-3"><span class="flex-none w-7 h-7 rounded-full bg-teal-600 text-white grid place-items-center text-xs">5</span><div><strong>로그아웃</strong> — 가능 (헤더 우측)</div></li>
+      </ol>
+    </aside>
+  </main>
+</body>
+</html>
