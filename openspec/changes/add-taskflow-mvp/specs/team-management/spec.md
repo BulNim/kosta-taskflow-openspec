@@ -2,11 +2,11 @@
 
 ### Requirement: 팀 생성
 
-인증된 사용자는 새 팀을 생성 SHALL 할 수 있다. 팀 생성자는 자동으로 admin 멤버가 되며, 시스템은 UNIQUE 한 초대코드를 발급 MUST 한다.
+인증된 사용자는 새 팀을 생성 SHALL 할 수 있다. 팀 생성자는 자동으로 admin 멤버가 되며, 시스템은 `XXXX-XXXX` 형식(영숫자 대문자+숫자 4자-4자, 하이픈 구분, 예: `ABCD-1234`)의 UNIQUE 한 초대코드를 발급 MUST 한다.
 
 #### Scenario: 새 팀 생성 성공
 - **WHEN** 인증된 사용자가 `POST /teams`에 `{name}`을 전송한다
-- **THEN** 시스템은 201 상태와 `{id, name, invite_code, owner_id}`를 반환하고, teams 테이블에 새 행을 생성하며 생성자를 owner로 설정한다
+- **THEN** 시스템은 201 상태와 `{id, name, invite_code, owner_id}`를 반환하고, invite_code는 정규식 `^[A-Z0-9]{4}-[A-Z0-9]{4}$`와 일치하며, 생성자를 owner로 설정한다
 
 #### Scenario: 초대코드는 UNIQUE
 - **WHEN** 여러 팀이 동시에 생성된다

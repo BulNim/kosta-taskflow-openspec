@@ -30,7 +30,7 @@
 
 ## 4. 팀 관리 (team-management)
 
-- [ ] 4.1 초대코드 생성기 (8자리 영숫자, 충돌 시 재시도)
+- [ ] 4.1 초대코드 생성기 (`XXXX-XXXX` 형식, 영숫자 대문자+숫자 4-4 하이픈, 예 `ABCD-1234`. 충돌 시 재시도)
 - [ ] 4.2 `is_team_member` 헬퍼 (멤버십 확인, 403 `NOT_TEAM_MEMBER`)
 - [ ] 4.3 `POST /teams` 구현 (생성자를 admin으로 멤버십 추가)
 - [ ] 4.4 `GET /teams` 구현 (내가 멤버인 팀만, 없으면 빈 배열)
@@ -39,11 +39,11 @@
 
 ## 5. 칸반 태스크 (kanban-board)
 
-- [ ] 5.1 status enum 정의 (`TODO`, `DOING`, `DONE`) + Pydantic 검증
-- [ ] 5.2 `POST /teams/{id}/tasks` 구현 (기본 status=TODO, creator_id 자동 설정)
+- [ ] 5.1 status enum (`TODO`/`DOING`/`DONE`) + title `max_length=200` Pydantic 검증
+- [ ] 5.2 `POST /teams/{id}/tasks` 구현 (기본 status=TODO, creator_id 자동, 200자 초과 시 400 `TITLE_TOO_LONG`)
 - [ ] 5.3 `GET /teams/{id}/tasks` 구현 (팀 멤버만)
 - [ ] 5.4 `GET /tasks/{id}` 구현 (없으면 404 `TASK_NOT_FOUND`)
-- [ ] 5.5 `PUT /tasks/{id}` 구현 (status/title 부분 수정, 무효 status 400 `INVALID_STATUS`)
+- [ ] 5.5 `PUT /tasks/{id}` 구현 (status/title 부분 수정, 무효 status 400 `INVALID_STATUS`, 제목 초과 400 `TITLE_TOO_LONG`)
 - [ ] 5.6 `DELETE /tasks/{id}` 구현 (팀 멤버 누구나, 204 반환)
 
 ## 6. 팀 채팅 (team-chat)

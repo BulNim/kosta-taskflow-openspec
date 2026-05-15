@@ -2,11 +2,15 @@
 
 ### Requirement: 팀 태스크 생성
 
-팀 멤버인 인증된 사용자는 해당 팀에 태스크를 추가 SHALL 할 수 있다. 새 태스크의 기본 상태는 `TODO`이며, 생성자는 자동으로 기록 MUST 된다.
+팀 멤버인 인증된 사용자는 해당 팀에 태스크를 추가 SHALL 할 수 있다. 태스크 제목은 1~200자로 제한 MUST 된다. 새 태스크의 기본 상태는 `TODO`이며, 생성자는 자동으로 기록 MUST 된다.
 
 #### Scenario: 태스크 추가 성공
-- **WHEN** 팀 멤버가 `POST /teams/{id}/tasks`에 `{title}`을 전송한다
+- **WHEN** 팀 멤버가 `POST /teams/{id}/tasks`에 `{title}`(200자 이하)을 전송한다
 - **THEN** 시스템은 201 상태와 `{id, team_id, title, status: "TODO", creator_id}`를 반환한다
+
+#### Scenario: 200자 초과 제목으로 추가 시도
+- **WHEN** 팀 멤버가 201자 이상의 title로 `POST /teams/{id}/tasks`를 호출한다
+- **THEN** 시스템은 400 상태와 `{code: "TITLE_TOO_LONG", msg: ...}`를 반환한다
 
 #### Scenario: 팀 멤버가 아닌 사용자의 추가 시도
 - **WHEN** 해당 팀의 멤버가 아닌 사용자가 `POST /teams/{id}/tasks`를 호출한다
@@ -46,11 +50,15 @@
 
 ### Requirement: 태스크 제목 수정
 
-팀 멤버는 기존 태스크의 제목을 수정 SHALL 할 수 있다.
+팀 멤버는 기존 태스크의 제목을 수정 SHALL 할 수 있다. 수정 시에도 제목은 1~200자 제한을 동일하게 적용 MUST 받는다.
 
 #### Scenario: 제목 수정 성공
-- **WHEN** 팀 멤버가 `PUT /tasks/{id}`에 `{title: "new title"}`을 전송한다
+- **WHEN** 팀 멤버가 `PUT /tasks/{id}`에 `{title: "new title"}`(200자 이하)을 전송한다
 - **THEN** 시스템은 200 상태와 업데이트된 태스크를 반환한다
+
+#### Scenario: 200자 초과 제목으로 수정 시도
+- **WHEN** 팀 멤버가 201자 이상의 title로 `PUT /tasks/{id}`를 호출한다
+- **THEN** 시스템은 400 상태와 `{code: "TITLE_TOO_LONG", msg: ...}`를 반환한다
 
 ### Requirement: 태스크 삭제
 
