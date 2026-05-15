@@ -1,0 +1,33 @@
+# Claude Code per-user settings
+.claude/settings.local.json
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Node / Frontend
+node_modules/
+.next/
+.turbo/
+dist/
+build/
+
+# Local DB (SQLite는 git 제외 - 프로그램 정의 2-9 안정성 항목)
+*.db
+*.sqlite
+*.sqlite3
+
+# Vercel
+.vercel/
