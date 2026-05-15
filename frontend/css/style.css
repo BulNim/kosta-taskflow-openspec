@@ -1,0 +1,40 @@
+/* Tailwind CDN과 함께 사용. 보조 스타일만 정의. */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+    "Malgun Gothic", "맑은 고딕", Roboto, sans-serif;
+}
+
+.toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  min-width: 220px;
+  max-width: 360px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.error {
+  background: #dc2626;
+}
+.toast.info {
+  background: #2563eb;
+}
+
+.dragging {
+  opacity: 0.5;
+}
+.drop-target {
+  outline: 2px dashed #2563eb;
+  outline-offset: -4px;
+}

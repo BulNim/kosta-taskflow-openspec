@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>TaskFlow</title>
+  <script>
+    const token = localStorage.getItem("taskflow_jwt");
+    location.replace(token ? "/pages/teams.html" : "/pages/login.html");
+  </script>
+</head>
+<body></body>
+</html>

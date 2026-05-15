@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow - 로그인</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="min-h-screen bg-slate-50 flex items-center justify-center">
+  <main class="w-full max-w-sm bg-white rounded-2xl shadow p-8">
+    <h1 class="text-2xl font-bold text-center text-slate-800 mb-1">TaskFlow</h1>
+    <p class="text-sm text-center text-slate-500 mb-6" id="modeHint">로그인하여 팀에 입장</p>
+
+    <form id="authForm" class="space-y-4">
+      <label class="block">
+        <span class="text-sm text-slate-700">이메일</span>
+        <input type="email" name="email" required autocomplete="email"
+               class="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-700">비밀번호</span>
+        <input type="password" name="password" required minlength="8" autocomplete="current-password"
+               class="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </label>
+      <button type="submit" id="submitBtn"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium">
+        로그인
+      </button>
+    </form>
+
+    <div class="text-center text-sm text-slate-600 mt-6">
+      <span id="modeText">계정이 없으신가요?</span>
+      <button type="button" id="toggleMode" class="text-blue-600 hover:underline ml-1">회원가입</button>
+    </div>
+  </main>
+  <script type="module" src="/js/login.js"></script>
+</body>
+</html>

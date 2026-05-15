@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow - 팀 선택</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="min-h-screen bg-slate-50">
+  <header class="bg-white border-b">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-slate-800">TaskFlow</h1>
+      <button id="logoutBtn" class="text-sm text-slate-600 hover:text-slate-900">로그아웃</button>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-8">
+    <section class="mb-8 grid md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h2 class="font-semibold text-slate-800 mb-3">새 팀 만들기</h2>
+        <form id="createForm" class="flex gap-2">
+          <input type="text" name="name" required maxlength="100"
+                 placeholder="팀 이름"
+                 class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">만들기</button>
+        </form>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h2 class="font-semibold text-slate-800 mb-3">초대코드로 합류</h2>
+        <form id="joinForm" class="flex gap-2">
+          <input type="text" name="invite_code" required pattern="[A-Z0-9]{4}-[A-Z0-9]{4}"
+                 placeholder="ABCD-1234"
+                 class="flex-1 px-3 py-2 border rounded-lg uppercase focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <button class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">합류</button>
+        </form>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-semibold text-slate-800 mb-3">내 팀</h2>
+      <div id="teamList" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="text-slate-500 text-sm">로딩...</div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/teams.js"></script>
+</body>
+</html>
