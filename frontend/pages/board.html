@@ -3,51 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TaskFlow - 칸반</title>
+  <title>TaskFlow · 칸반</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/tokens.css" />
 </head>
-<body class="min-h-screen bg-slate-50">
-  <header class="bg-white border-b">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <a href="/pages/teams.html" class="text-slate-500 hover:text-slate-900">← 팀</a>
-        <h1 class="text-lg font-bold text-slate-800" id="teamTitle">팀 보드</h1>
+<body class="min-h-screen" style="background:var(--color-bg)">
+  <div id="appHeader"></div>
+
+  <main class="max-w-[1300px] mx-auto px-4 md:px-6 py-4 md:py-6">
+    <!-- 필터·정렬 바 -->
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+      <div class="flex items-center gap-2 text-sm" id="filterTabs" data-current="all">
+        <button data-filter="all"        class="filter-btn px-3 py-1.5 rounded-md">전체</button>
+        <button data-filter="mine"       class="filter-btn px-3 py-1.5 rounded-md">@me</button>
+        <button data-filter="unassigned" class="filter-btn px-3 py-1.5 rounded-md">미할당</button>
       </div>
-      <nav class="flex items-center gap-3 text-sm">
-        <a id="chatLink" href="#" class="px-3 py-1.5 rounded-lg hover:bg-slate-100">채팅</a>
-        <button id="logoutBtn" class="text-slate-500 hover:text-slate-900">로그아웃</button>
-      </nav>
+      <div class="text-sm">
+        <select id="sortSelect" class="input-base !py-1.5 !w-auto">
+          <option value="created_at_desc">정렬: 최근 생성순</option>
+          <option value="created_at_asc">정렬: 오래된 순</option>
+        </select>
+      </div>
     </div>
-  </header>
 
-  <main class="max-w-6xl mx-auto px-6 py-6">
+    <!-- 모바일 컬럼 탭 -->
+    <div class="md:hidden flex items-center justify-around mb-3 border-b" id="mobileColTabs" data-current="TODO">
+      <button data-col="TODO"  class="mcol-btn flex-1 py-2 text-sm font-semibold">TODO</button>
+      <button data-col="DOING" class="mcol-btn flex-1 py-2 text-sm font-semibold">DOING</button>
+      <button data-col="DONE"  class="mcol-btn flex-1 py-2 text-sm font-semibold">DONE</button>
+    </div>
+
+    <!-- 3컬럼 -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <section data-column="TODO" class="bg-white rounded-2xl shadow p-4 min-h-[60vh] flex flex-col">
-        <header class="flex items-center justify-between mb-3">
-          <h2 class="font-semibold text-slate-800">TODO</h2>
-          <button class="add-btn text-blue-600 hover:bg-blue-50 rounded px-2" title="추가">+</button>
+      <section data-column="TODO" class="board-col">
+        <header class="rounded-t-lg px-4 py-3 flex items-center justify-between col-todo border-x border-t">
+          <span class="font-semibold">TODO · <span class="col-count">0</span></span>
+          <button class="add-btn w-7 h-7 rounded grid place-items-center hover:bg-amber-200/60">+</button>
         </header>
-        <div class="cards flex-1 space-y-2"></div>
+        <div class="bg-white border-x border-b border-amber-200 rounded-b-lg p-2 space-y-2 min-h-[300px] cards"></div>
       </section>
 
-      <section data-column="DOING" class="bg-white rounded-2xl shadow p-4 min-h-[60vh] flex flex-col">
-        <header class="flex items-center justify-between mb-3">
-          <h2 class="font-semibold text-slate-800">DOING</h2>
-          <button class="add-btn text-blue-600 hover:bg-blue-50 rounded px-2" title="추가">+</button>
+      <section data-column="DOING" class="board-col">
+        <header class="rounded-t-lg px-4 py-3 flex items-center justify-between col-doing border-x border-t">
+          <span class="font-semibold">DOING · <span class="col-count">0</span></span>
+          <button class="add-btn w-7 h-7 rounded grid place-items-center hover:bg-blue-200/60">+</button>
         </header>
-        <div class="cards flex-1 space-y-2"></div>
+        <div class="bg-white border-x border-b border-blue-200 rounded-b-lg p-2 space-y-2 min-h-[300px] cards"></div>
       </section>
 
-      <section data-column="DONE" class="bg-white rounded-2xl shadow p-4 min-h-[60vh] flex flex-col">
-        <header class="flex items-center justify-between mb-3">
-          <h2 class="font-semibold text-slate-800">DONE</h2>
-          <button class="add-btn text-blue-600 hover:bg-blue-50 rounded px-2" title="추가">+</button>
+      <section data-column="DONE" class="board-col">
+        <header class="rounded-t-lg px-4 py-3 flex items-center justify-between col-done border-x border-t">
+          <span class="font-semibold">DONE · <span class="col-count">0</span></span>
+          <button class="add-btn w-7 h-7 rounded grid place-items-center hover:bg-green-200/60">+</button>
         </header>
-        <div class="cards flex-1 space-y-2"></div>
+        <div class="bg-white border-x border-b border-green-200 rounded-b-lg p-2 space-y-2 min-h-[300px] cards"></div>
       </section>
     </div>
   </main>
+
+  <!-- 모바일 FAB -->
+  <button id="fabAdd" class="md:hidden fixed bottom-5 right-5 w-14 h-14 rounded-full text-2xl shadow-md btn-primary">+</button>
+
+  <!-- Bottom sheet (모바일 status 변경) -->
+  <div id="statusSheet" class="sheet-backdrop">
+    <div class="sheet">
+      <div class="text-sm font-semibold mb-2">상태 변경</div>
+      <button data-status="TODO">TODO로 이동</button>
+      <button data-status="DOING">DOING으로 이동</button>
+      <button data-status="DONE">DONE으로 이동</button>
+      <hr class="my-2" />
+      <button data-action="edit">제목 수정</button>
+      <button data-action="delete" class="text-red-600">삭제</button>
+      <button data-action="cancel">취소</button>
+    </div>
+  </div>
+
+  <style>
+    /* 필터 버튼 활성/비활성 */
+    .filter-btn { border:1px solid var(--color-border); background:#fff; color:var(--color-text-muted); }
+    .filter-btn.active { background:#0F172A; color:#fff; border-color:#0F172A; }
+    /* 모바일 컬럼 탭 */
+    .mcol-btn { color: var(--color-text-muted); border-bottom: 2px solid transparent; }
+    .mcol-btn.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+    /* 모바일에서 비활성 컬럼 숨김 */
+    @media (max-width: 767px) {
+      .board-col { display: none; }
+      .board-col.show { display: block; }
+    }
+  </style>
 
   <script type="module" src="/js/board.js"></script>
 </body>

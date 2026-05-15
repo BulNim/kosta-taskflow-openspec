@@ -1,32 +1,30 @@
-import { api } from "./api.js";
-import { getToken, setToken } from "./auth.js";
-import { toast } from "./toast.js";
+import { api } from "/js/api.js";
+import { getToken, setToken } from "/js/auth.js";
+import { toast } from "/js/toast.js";
 
-if (getToken()) location.replace("/pages/teams.html");
+if (getToken()) {
+  // 이미 로그인 상태면 루트로 보내서 라우팅 결정
+  location.replace("/");
+}
 
-let mode = "login"; // 'login' | 'signup'
+let mode = "login";
 
 const form = document.getElementById("authForm");
 const submitBtn = document.getElementById("submitBtn");
 const toggleBtn = document.getElementById("toggleMode");
 const modeText = document.getElementById("modeText");
 const modeHint = document.getElementById("modeHint");
+const modeTitle = document.getElementById("modeTitle");
 const pwdInput = form.querySelector('input[name="password"]');
 
 function applyMode() {
-  if (mode === "login") {
-    submitBtn.textContent = "로그인";
-    toggleBtn.textContent = "회원가입";
-    modeText.textContent = "계정이 없으신가요?";
-    modeHint.textContent = "로그인하여 팀에 입장";
-    pwdInput.autocomplete = "current-password";
-  } else {
-    submitBtn.textContent = "회원가입";
-    toggleBtn.textContent = "로그인으로";
-    modeText.textContent = "이미 계정이 있으신가요?";
-    modeHint.textContent = "새 계정을 만들고 시작";
-    pwdInput.autocomplete = "new-password";
-  }
+  const isLogin = mode === "login";
+  modeTitle.textContent = isLogin ? "로그인" : "회원가입";
+  submitBtn.textContent = isLogin ? "로그인" : "가입하기";
+  toggleBtn.textContent = isLogin ? "회원가입" : "로그인";
+  modeText.textContent = isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?";
+  modeHint.textContent = isLogin ? "팀에 입장하려면 로그인하세요" : "새 계정을 만들고 시작";
+  pwdInput.autocomplete = isLogin ? "current-password" : "new-password";
 }
 
 toggleBtn.addEventListener("click", () => {
@@ -39,14 +37,18 @@ form.addEventListener("submit", async (e) => {
   const data = Object.fromEntries(new FormData(form).entries());
   const path = mode === "login" ? "/auth/login" : "/auth/signup";
   submitBtn.disabled = true;
+  submitBtn.textContent = mode === "login" ? "로그인 중…" : "가입 중…";
   try {
     const res = await api(path, { method: "POST", body: data });
     setToken(res.access_token);
-    location.replace("/pages/teams.html");
+    const target = res.user?.current_team_id
+      ? `/pages/board.html?team_id=${res.user.current_team_id}`
+      : "/pages/teams.html";
+    location.replace(target);
   } catch (err) {
     toast(err.msg || "요청 실패");
-  } finally {
     submitBtn.disabled = false;
+    applyMode();
   }
 });
 

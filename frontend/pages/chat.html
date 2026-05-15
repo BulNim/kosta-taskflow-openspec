@@ -3,34 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TaskFlow - 채팅</title>
+  <title>TaskFlow · 채팅</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/tokens.css" />
 </head>
-<body class="min-h-screen bg-slate-50 flex flex-col">
-  <header class="bg-white border-b">
-    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <a href="/pages/teams.html" class="text-slate-500 hover:text-slate-900">← 팀</a>
-        <h1 class="text-lg font-bold text-slate-800" id="teamTitle">팀 채팅</h1>
-      </div>
-      <nav class="flex items-center gap-3 text-sm">
-        <a id="boardLink" href="#" class="px-3 py-1.5 rounded-lg hover:bg-slate-100">칸반</a>
-        <button id="logoutBtn" class="text-slate-500 hover:text-slate-900">로그아웃</button>
-      </nav>
-    </div>
-  </header>
+<body class="min-h-screen flex flex-col" style="background:var(--color-bg)">
+  <div id="appHeader"></div>
 
-  <main class="flex-1 max-w-3xl w-full mx-auto px-6 py-4 flex flex-col">
-    <div id="messages" class="flex-1 overflow-y-auto bg-white rounded-2xl shadow p-4 space-y-2 min-h-[60vh]">
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 md:px-6 py-4 md:py-6 flex flex-col">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold">채팅</h2>
+      <span class="flex items-center gap-1.5 text-xs" style="color:var(--color-primary)">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 5초마다 새로고침
+      </span>
+    </div>
+
+    <div id="messages" class="flex-1 overflow-y-auto bg-white rounded-2xl shadow-sm border p-4 space-y-3 min-h-[55vh]">
       <div class="text-slate-400 text-sm">로딩...</div>
     </div>
 
     <form id="sendForm" class="mt-4 flex gap-2">
-      <input type="text" name="content" required maxlength="1000" autocomplete="off"
-             placeholder="메시지를 입력하세요 (최대 1000자)"
-             class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">전송</button>
+      <input type="text" name="content" required maxlength="1000" autocomplete="off" placeholder="메시지 입력 (1000자 이내)..." class="input-base flex-1" />
+      <button class="btn-primary">전송</button>
     </form>
   </main>
 

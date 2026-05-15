@@ -1,6 +1,7 @@
-import { api } from "./api.js";
-import { clearToken, requireAuthOrRedirect } from "./auth.js";
-import { toast } from "./toast.js";
+import { api } from "/js/api.js";
+import { requireAuthOrRedirect } from "/js/auth.js";
+import { renderHeader } from "/js/header.js";
+import { toast } from "/js/toast.js";
 
 requireAuthOrRedirect();
 
@@ -8,69 +9,75 @@ const params = new URLSearchParams(location.search);
 const teamId = params.get("team_id");
 if (!teamId) location.replace("/pages/teams.html");
 
-document.getElementById("boardLink").href = `/pages/board.html?team_id=${teamId}`;
+await renderHeader({ teamId, active: "chat" });
 
-const POLL_INTERVAL_MS = 5000;
+const POLL_MS = 5000;
+const INITIAL_LIMIT = 50;
+
 const messagesEl = document.getElementById("messages");
 const sendForm = document.getElementById("sendForm");
 const inputEl = sendForm.querySelector('input[name="content"]');
 
-let memberMap = new Map();
-let lastSeen = null;
+let me = null;
+let lastSeen = new Date(0).toISOString();
 let pollTimer = null;
 const renderedIds = new Set();
 
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-  try { await api("/auth/logout", { method: "POST" }); } catch {}
-  clearToken();
-  location.replace("/pages/login.html");
-});
-
-async function loadTitleAndMembers() {
-  try {
-    const [teams, members] = await Promise.all([api("/teams"), api(`/teams/${teamId}/members`)]);
-    const team = teams.find((t) => String(t.id) === String(teamId));
-    if (team) document.getElementById("teamTitle").textContent = `${team.name} - 채팅`;
-    memberMap = new Map(members.map((m) => [m.id, m.email]));
-  } catch (err) {
-    toast(err.msg);
-  }
+async function loadMe() {
+  try { me = await api("/auth/me"); } catch {}
 }
 
-function formatTime(iso) {
+function fmtTime(iso) {
   try {
     const d = new Date(iso);
-    return d.toLocaleString("ko-KR", { hour12: false });
-  } catch {
-    return iso;
-  }
+    return d.toLocaleTimeString("ko-KR", { hour12: false, hour: "2-digit", minute: "2-digit" });
+  } catch { return iso; }
+}
+
+function shortName(email) {
+  if (!email) return "user";
+  return email.split("@")[0];
 }
 
 function appendMessage(m) {
   if (renderedIds.has(m.id)) return;
   renderedIds.add(m.id);
-  const sender = memberMap.get(m.user_id) || `user#${m.user_id}`;
+  if (m.created_at > lastSeen) lastSeen = m.created_at;
+
   const wasAtBottom = messagesEl.scrollTop + messagesEl.clientHeight >= messagesEl.scrollHeight - 20;
+  const isSelf = me && m.user_id === me.id;
+  const sender = isSelf ? "나" : shortName(m.user_email);
+
   const wrap = document.createElement("div");
-  wrap.className = "py-1";
+  wrap.className = isSelf ? "text-right" : "";
   wrap.innerHTML = `
-    <div class="text-xs text-slate-500">
-      <span class="font-semibold text-slate-700"></span>
+    <div class="text-xs" style="color:var(--color-text-muted)">
+      <span class="font-semibold" style="color:var(--color-text)"></span>
       <span class="ml-2"></span>
     </div>
-    <div class="text-sm text-slate-800 break-words whitespace-pre-wrap"></div>`;
+    <div class="bubble mt-1 inline-block max-w-[80%] px-3 py-2 rounded-lg whitespace-pre-wrap break-words"></div>
+  `;
   wrap.querySelector(".font-semibold").textContent = sender;
-  wrap.querySelector("span.ml-2").textContent = formatTime(m.created_at);
-  wrap.querySelector(".text-sm").textContent = m.content;
+  wrap.querySelector("span.ml-2").textContent = fmtTime(m.created_at);
+  const bubble = wrap.querySelector(".bubble");
+  bubble.textContent = m.content;
+  if (isSelf) {
+    bubble.style.background = "var(--color-primary)";
+    bubble.style.color = "#fff";
+  } else {
+    bubble.style.background = "#fff";
+    bubble.style.border = "1px solid var(--color-border)";
+    bubble.style.color = "var(--color-text)";
+  }
+
   messagesEl.appendChild(wrap);
   if (wasAtBottom) messagesEl.scrollTop = messagesEl.scrollHeight;
-  lastSeen = m.created_at > lastSeen ? m.created_at : lastSeen;
 }
 
 async function loadInitial() {
   messagesEl.innerHTML = "";
   try {
-    const list = await api(`/teams/${teamId}/messages`);
+    const list = await api(`/teams/${teamId}/messages?limit=${INITIAL_LIMIT}`);
     if (!list.length) {
       messagesEl.innerHTML = '<div class="text-slate-400 text-sm">아직 메시지가 없습니다. 첫 메시지를 보내보세요.</div>';
       return;
@@ -84,11 +91,9 @@ async function loadInitial() {
 }
 
 async function pollOnce() {
-  if (!lastSeen) return;
   try {
     const list = await api(`/teams/${teamId}/messages?since=${encodeURIComponent(lastSeen)}`);
     if (list.length) {
-      // 첫 메시지 도착 시 placeholder 제거
       const placeholder = messagesEl.querySelector(".text-slate-400");
       if (placeholder) placeholder.remove();
       list.forEach(appendMessage);
@@ -100,14 +105,10 @@ async function pollOnce() {
 
 function startPolling() {
   stopPolling();
-  pollTimer = setInterval(pollOnce, POLL_INTERVAL_MS);
+  pollTimer = setInterval(pollOnce, POLL_MS);
 }
-
 function stopPolling() {
-  if (pollTimer) {
-    clearInterval(pollTimer);
-    pollTimer = null;
-  }
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
 }
 
 sendForm.addEventListener("submit", async (e) => {
@@ -117,10 +118,7 @@ sendForm.addEventListener("submit", async (e) => {
   if (content.length > 1000) return toast("메시지는 1000자 이내여야 합니다");
   inputEl.disabled = true;
   try {
-    const created = await api(`/teams/${teamId}/messages`, {
-      method: "POST",
-      body: { content },
-    });
+    const created = await api(`/teams/${teamId}/messages`, { method: "POST", body: { content } });
     const placeholder = messagesEl.querySelector(".text-slate-400");
     if (placeholder) placeholder.remove();
     appendMessage(created);
@@ -140,10 +138,6 @@ document.addEventListener("visibilitychange", () => {
   else startPolling();
 });
 
-(async () => {
-  await loadTitleAndMembers();
-  await loadInitial();
-  // lastSeen 시드: 마지막 메시지 시각 or 현재
-  if (!lastSeen) lastSeen = new Date(0).toISOString();
-  startPolling();
-})();
+await loadMe();
+await loadInitial();
+startPolling();

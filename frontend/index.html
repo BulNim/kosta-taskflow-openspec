@@ -3,9 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <title>TaskFlow</title>
-  <script>
-    const token = localStorage.getItem("taskflow_jwt");
-    location.replace(token ? "/pages/teams.html" : "/pages/login.html");
+  <script type="module">
+    import { getToken, clearToken } from "/js/auth.js";
+
+    (async () => {
+      const token = getToken();
+      if (!token) { location.replace("/pages/login.html"); return; }
+      try {
+        const res = await fetch("/auth/me", { headers: { Authorization: "Bearer " + token } });
+        if (res.status === 401) { clearToken(); location.replace("/pages/login.html"); return; }
+        if (!res.ok) throw new Error("auth/me failed");
+        const me = await res.json();
+        if (me.current_team_id) {
+          location.replace("/pages/board.html?team_id=" + me.current_team_id);
+        } else {
+          location.replace("/pages/teams.html");
+        }
+      } catch {
+        location.replace("/pages/login.html");
+      }
+    })();
   </script>
 </head>
 <body></body>

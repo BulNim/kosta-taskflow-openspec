@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 
 
 class MessageCreateIn(BaseModel):
@@ -11,6 +11,7 @@ class MessageOut(BaseModel):
     id: int
     team_id: int
     user_id: int
+    user_email: EmailStr | None = None
     content: str
     created_at: datetime
 

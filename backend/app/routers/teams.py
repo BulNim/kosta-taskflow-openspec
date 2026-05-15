@@ -15,6 +15,11 @@ router = APIRouter(prefix="/teams", tags=["teams"])
 _INVITE_CODE_MAX_RETRY = 8
 
 
+def _set_current_team_if_unset(user: User, team_id: int) -> None:
+    if user.current_team_id is None:
+        user.current_team_id = team_id
+
+
 @router.post("", response_model=TeamOut, status_code=status.HTTP_201_CREATED)
 def create_team(
     payload: TeamCreateIn,
@@ -30,6 +35,7 @@ def create_team(
             db.rollback()
             continue
         db.add(TeamMember(team_id=team.id, user_id=user.id, role="admin"))
+        _set_current_team_if_unset(user, team.id)
         db.commit()
         db.refresh(team)
         return team
@@ -42,7 +48,9 @@ def list_my_teams(
     user: User = Depends(get_current_user),
 ) -> list[Team]:
     rows = db.execute(
-        select(Team).join(TeamMember, TeamMember.team_id == Team.id).where(TeamMember.user_id == user.id)
+        select(Team)
+        .join(TeamMember, TeamMember.team_id == Team.id)
+        .where(TeamMember.user_id == user.id)
     ).scalars().all()
     return list(rows)
 
@@ -67,7 +75,8 @@ def join_team(
     ).scalar_one_or_none()
     if existing is None:
         db.add(TeamMember(team_id=team.id, user_id=user.id, role="member"))
-        db.commit()
+    _set_current_team_if_unset(user, team.id)
+    db.commit()
     return team
 
 
@@ -79,6 +88,8 @@ def list_team_members(
 ) -> list[User]:
     require_team_membership(team_id, user, db)
     rows = db.execute(
-        select(User).join(TeamMember, TeamMember.user_id == User.id).where(TeamMember.team_id == team_id)
+        select(User)
+        .join(TeamMember, TeamMember.user_id == User.id)
+        .where(TeamMember.team_id == team_id)
     ).scalars().all()
     return list(rows)

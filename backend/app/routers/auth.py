@@ -15,10 +15,11 @@ from backend.app.schemas.auth import LoginIn, SignupIn, TokenOut, UserOut
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-def _issue_token(user_id: int) -> TokenOut:
+def _issue_token(user: User) -> TokenOut:
     return TokenOut(
-        access_token=create_access_token(user_id),
+        access_token=create_access_token(user.id),
         expires_in=settings.JWT_EXPIRES_HOURS * 3600,
+        user=UserOut.model_validate(user),
     )
 
 
@@ -32,7 +33,7 @@ def signup(payload: SignupIn, db: Session = Depends(get_db)) -> TokenOut:
         db.rollback()
         raise AppError(409, "EMAIL_EXISTS", "이미 가입된 이메일입니다")
     db.refresh(user)
-    return _issue_token(user.id)
+    return _issue_token(user)
 
 
 @router.post("/login", response_model=TokenOut)
@@ -40,7 +41,7 @@ def login(payload: LoginIn, db: Session = Depends(get_db)) -> TokenOut:
     user = db.execute(select(User).where(User.email == payload.email)).scalar_one_or_none()
     if user is None or not verify_password(payload.password, user.password_hash):
         raise AppError(401, "INVALID_CREDENTIALS", "이메일 또는 비밀번호가 올바르지 않습니다")
-    return _issue_token(user.id)
+    return _issue_token(user)
 
 
 @router.get("/me", response_model=UserOut)
